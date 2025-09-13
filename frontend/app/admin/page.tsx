@@ -41,9 +41,14 @@ export default function Home() {
             <AdminHeader />
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
 
-                <h1>Dashboard</h1>
+                
 
-                <Link href={'/product'}>Add New Product</Link>
+                <Link href={'/admin/product'} className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-dark/40 
+                                            focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Add New Product</Link>
+                
+                <br/>
+                <br/>
+                
                 {/* Tab Labels */}
                 <div className="flex border-b border-gray-300">
                     {tabData.map((tab, index) => (

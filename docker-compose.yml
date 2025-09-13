@@ -20,10 +20,13 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
 
     healthcheck:
-      test: ["CMD", "bash", "-c", "unset JMX_PORT; kafka-topics.sh --bootstrap-server localhost:9092 --list"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 || exit 1"]
+      interval: 15s
+      timeout: 15s
+      retries: 20
+
+    volumes:
+    - kafka_data:/bitnami/kafka
 
   backend:
     build:
@@ -71,3 +74,5 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+volumes:
+  kafka_data:

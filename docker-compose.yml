@@ -64,7 +64,7 @@ services:
       dockerfile: Dockerfile
     container_name: nextjs-frontend
     ports:
-      - "3001:3000"   # map container port 3000 → host port 3001
+      - "3001:3001"   # map container port 3000 → host port 3001
     environment:
       # 👇 use container names instead of localhost (inside Docker network)
       - NEXT_PUBLIC_API_URL=http://backend:3000

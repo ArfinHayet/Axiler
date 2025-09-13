@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+aiokafka
+motor
+pydantic
+PyJWT
+python-dotenv
+cryptography

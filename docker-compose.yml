@@ -20,7 +20,7 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
 
     healthcheck:
-      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 || exit 1"]
+      test: ["CMD", "bash", "-c", "unset JMX_PORT; kafka-topics.sh --bootstrap-server kafka:9092 --list || exit 1"]
       interval: 15s
       timeout: 15s
       retries: 20

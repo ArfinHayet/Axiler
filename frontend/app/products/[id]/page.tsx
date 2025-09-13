@@ -76,7 +76,7 @@ export default function ProductDetail() {
                         <div className="img">
                             <div className="img-box w-full max-lg:mx-auto">
                                 <img
-                                    src={`http://localhost:3000/uploads/${product.image}`}
+                                    src={process.env.NEXT_PUBLIC_API_URL + 'uploads/'+ product.image}
                                     alt={product.name}
                                     className="max-lg:mx-auto lg:ml-auto w-full h-[100vh] object-cover"
                                 />

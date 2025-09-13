@@ -17,7 +17,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Connect to NestJS backend
-    socketRef.current = io("http://localhost:3000"); // your NestJS backend URL
+    socketRef.current = io(process.env.NEXT_PUBLIC_SOCKET_URL as string); // your NestJS backend URL
     const socket = socketRef.current;
 
     socket.on("connect", () => {

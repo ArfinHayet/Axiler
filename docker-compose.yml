@@ -13,14 +13,15 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,PLAINTEXT_HOST://:29092
+      # 👇 internal containers connect using "kafka:9092"
+      # 👇 external apps (e.g. on your laptop) connect using "localhost:29092"
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-
     volumes:
-    - kafka_data:/bitnami/kafka
+      - kafka_data:/bitnami/kafka
 
   backend:
     build:
@@ -31,6 +32,8 @@ services:
       - "3000:3000"
     env_file:
       - ./backend/.env
+    environment:
+      - KAFKA_BROKER=kafka:9092   # 👈 use container name for Kafka
     volumes:
       - ./backend/uploads:/app/uploads
       - ./backend/keys:/app/keys
@@ -47,6 +50,8 @@ services:
       - "8000:8000"
     env_file:
       - ./python-service/.env
+    environment:
+      - KAFKA_BROKER=kafka:9092   # 👈 use container name for Kafka
     volumes:
       - ./python-service/certs:/app/certs
     depends_on:
@@ -59,14 +64,16 @@ services:
       dockerfile: Dockerfile
     container_name: nextjs-frontend
     ports:
-      - "3001:3001"   # maps container port 3000 to host 3001
+      - "3001:3000"   # map container port 3000 → host port 3001
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3000  # or backend container name if using network
-
-    volumes: []
-    
+      # 👇 use container names instead of localhost (inside Docker network)
+      - NEXT_PUBLIC_API_URL=http://backend:3000
+      - NEXT_PUBLIC_SOCKET_URL=http://backend:3000/
     depends_on:
+      backend:
+        condition: service_started
       kafka:
         condition: service_started
+
 volumes:
   kafka_data:

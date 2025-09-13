@@ -79,4 +79,3 @@ Client → http://34.30.168.253:3001/
 Admin → http://34.30.168.253:3001/admin/
 
 
-Do you want me to also add a **Tech Stack section** (React, Redux, NestJS, Python, Kafka, Docker) with badges so the README looks more professional?

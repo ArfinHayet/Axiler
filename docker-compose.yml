@@ -19,12 +19,6 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
 
-    healthcheck:
-      test: ["CMD", "bash", "-c", "unset JMX_PORT; kafka-topics.sh --bootstrap-server kafka:9092 --list || exit 1"]
-      interval: 15s
-      timeout: 15s
-      retries: 20
-
     volumes:
     - kafka_data:/bitnami/kafka
 
@@ -42,7 +36,7 @@ services:
       - ./backend/keys:/app/keys
     depends_on:
       kafka: 
-        condition: service_healthy
+        condition: service_started
 
   python-service:
     build:
@@ -57,7 +51,7 @@ services:
       - ./python-service/certs:/app/certs
     depends_on:
       kafka:
-        condition: service_healthy
+        condition: service_started
 
   frontend:
     build:
@@ -73,6 +67,6 @@ services:
     
     depends_on:
       kafka:
-        condition: service_healthy
+        condition: service_started
 volumes:
   kafka_data:

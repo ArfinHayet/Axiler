@@ -26,6 +26,7 @@ export default function Home() {
                 console.log("Response", res)
                 // set uploaded URL into react-hook-form state
                 toast.success("Product added successfully", { id: toastId })
+                reset();
             },
 
             onError: () => {
@@ -50,9 +51,9 @@ export default function Home() {
         fileUpload(file, {
             onSuccess: (res: string) => {
                 // set uploaded URL into react-hook-form state
+                console.log("image",res)
                 setValue("image", res);
                 toast.success("File upload successfully", { id: toastId })
-                reset();
             },
         });
     };

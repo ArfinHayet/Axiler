@@ -6,6 +6,9 @@ import OrderTable from "./component/OrderTable";
 import { useProductListVm } from "../products/viewmodels/useProductVM";
 import { useOrderListVm } from "./orders/useOrderListVM";
 import AdminHeader from "@/components/AdminHeader";
+import { useLocalStorage } from "@/lib/utils/useLocalStorage";
+import { useRouter } from "next/navigation";
+import Link from "next/link"
 
 interface Tab {
     label: string;
@@ -15,6 +18,7 @@ interface Tab {
 
 export default function Home() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const router = useRouter()
 
     const { products, isLoading, isError, error, refetch } = useProductListVm();
     const { orders } = useOrderListVm();
@@ -24,7 +28,13 @@ export default function Home() {
         // @ts-expect-error demo
         { label: "Order", content: <OrderTable data={orders} /> }
     ];
+    
 
+    useEffect(() => {
+        if(!useLocalStorage.getItem("adminToken")){
+           router.push('/admin/login')
+        }  
+    },[])
 
     return (
         <>
@@ -32,6 +42,8 @@ export default function Home() {
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
 
                 <h1>Dashboard</h1>
+
+                <Link href={'/product'}>Add New Product</Link>
                 {/* Tab Labels */}
                 <div className="flex border-b border-gray-300">
                     {tabData.map((tab, index) => (

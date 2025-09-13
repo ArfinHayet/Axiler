@@ -77,6 +77,16 @@ export default function Checkout() {
 
   }, [products])
 
+
+  if (products.length == 0) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p className="text-gray-700 text-lg font-medium">No Product in cart</p>
+      </div>
+    )
+
+  }
+
   return (
     <>
       <Header />
@@ -240,7 +250,7 @@ export default function Checkout() {
                     Login To Continue
                   </Link>
                 }
-                
+
               </div>
             </div>
           </div>
